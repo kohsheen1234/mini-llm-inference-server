@@ -76,7 +76,7 @@ dive.
 - [x] [Numerically stable softmax](docs/stable-softmax.md)
 - [x] [Temperature scaling](docs/temperature.md)
 - [x] [Top-k filtering](docs/top-k.md)
-- [ ] Top-p filtering
+- [x] [Top-p filtering](docs/top-p.md)
 - [ ] Sampling from probabilities
 - [ ] Greedy token selection
 

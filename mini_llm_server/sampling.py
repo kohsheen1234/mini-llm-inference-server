@@ -4,7 +4,7 @@ A transformer emits one logit (an unbounded score) per vocabulary token. Before
 a token can be sampled, those logits are optionally reshaped by temperature and
 then normalised into a probability distribution by softmax:
 
-    logits -> apply_temperature -> top_k_filter -> stable_softmax -> probabilities -> sample
+    logits -> apply_temperature -> top_k_filter / top_p_filter -> stable_softmax -> sample
 
 Each function operates over the last axis, so it works for a single request
 ``(vocab,)``, a batch ``(batch, vocab)``, or a sequence batch
@@ -61,3 +61,38 @@ def top_k_filter(logits, k):
     threshold = np.partition(logits, -k, axis=-1)[..., -k]
     threshold = np.expand_dims(threshold, axis=-1)  # restore axis for broadcasting
     return np.where(logits >= threshold, logits, -np.inf)
+
+
+def top_p_filter(logits, p):
+    """Keep the smallest set of tokens whose cumulative probability reaches ``p``.
+
+    Also called nucleus sampling. Tokens are ranked by probability and kept
+    until their running total crosses ``p``; the token that crosses the
+    threshold is included, and everything after it is masked to ``-inf`` so a
+    subsequent ``stable_softmax`` gives it zero probability. The top token is
+    always kept. Unlike ``top_k_filter`` this adapts the count to how peaked the
+    distribution is. ``p <= 0`` masks everything (degenerate). See
+    ``docs/top-p.md``.
+    """
+    probabilities = stable_softmax(logits)
+
+    # Rank tokens from most to least probable (stable keeps ties deterministic).
+    sorted_indices = np.argsort(-probabilities, axis=-1, kind="stable")
+    sorted_probabilities = np.take_along_axis(probabilities, sorted_indices, axis=-1)
+
+    # Cumulative mass, and the mass accumulated *before* each token.
+    cumulative = np.cumsum(sorted_probabilities, axis=-1)
+    previous_cumulative = np.concatenate(
+        [np.zeros_like(cumulative[..., :1]), cumulative[..., :-1]],
+        axis=-1,
+    )
+
+    # Drop a token only once earlier (higher-probability) tokens already reached
+    # p, so the token that crosses the threshold is kept.
+    sorted_remove_mask = previous_cumulative >= p
+
+    # Scatter the mask back to each token's original position.
+    remove_mask = np.zeros_like(sorted_remove_mask, dtype=bool)
+    np.put_along_axis(remove_mask, sorted_indices, sorted_remove_mask, axis=-1)
+
+    return np.where(remove_mask, -np.inf, logits)
