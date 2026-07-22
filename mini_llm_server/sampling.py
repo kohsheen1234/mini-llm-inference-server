@@ -4,7 +4,7 @@ A transformer emits one logit (an unbounded score) per vocabulary token. Before
 a token can be sampled, those logits are optionally reshaped by temperature and
 then normalised into a probability distribution by softmax:
 
-    logits -> apply_temperature -> stable_softmax -> probabilities -> sample
+    logits -> apply_temperature -> top_k_filter -> stable_softmax -> probabilities -> sample
 
 Each function operates over the last axis, so it works for a single request
 ``(vocab,)``, a batch ``(batch, vocab)``, or a sequence batch
@@ -40,3 +40,24 @@ def apply_temperature(logits, temperature):
     if temperature <= 0:
         return logits
     return logits / temperature
+
+
+def top_k_filter(logits, k):
+    """Keep only the ``k`` largest logits per row, masking the rest to ``-inf``.
+
+    Restricts sampling to the ``k`` most likely tokens. Masked positions become
+    ``-inf`` so a subsequent ``stable_softmax`` assigns them zero probability.
+    ``k >= vocab_size`` is a no-op; ``k <= 0`` masks everything. Ties at the
+    k-th largest value are all kept, so more than ``k`` logits can survive when
+    there are duplicates. See ``docs/top-k.md``.
+    """
+    vocab_size = logits.shape[-1]
+    if k >= vocab_size:
+        return logits
+    if k <= 0:
+        return np.full_like(logits, -np.inf)
+
+    # The k-th largest value in each row is the keep/mask threshold.
+    threshold = np.partition(logits, -k, axis=-1)[..., -k]
+    threshold = np.expand_dims(threshold, axis=-1)  # restore axis for broadcasting
+    return np.where(logits >= threshold, logits, -np.inf)
