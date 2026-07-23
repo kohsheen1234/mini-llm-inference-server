@@ -34,20 +34,20 @@ show the core mechanics behind production inference systems.
 mini-llm-inference-server/
 ├── mini_llm_server/        # the package
 │   ├── __init__.py         # public API re-exports
-│   └── sampling.py         # sampling primitives (softmax, temperature, …)
-├── docs/                   # per-component deep dives
-│   ├── stable-softmax.md
-│   ├── temperature.md
-│   └── softmax.svg
+│   ├── sampling.py         # sampling primitives (softmax, temperature, top-k/p, …)
+│   └── tokenizer.py        # tokenization (build_vocab, …)
+├── docs/                   # per-component deep dives, grouped by module
+│   ├── sampling/           # one page per sampling primitive (+ softmax.svg)
+│   └── tokenizer/          # one page per tokenization step
 ├── examples/
-│   └── plot_softmax.py     # regenerates docs/softmax.svg (stdlib only)
+│   └── plot_softmax.py     # regenerates docs/sampling/softmax.svg (stdlib only)
 ├── requirements.txt
 └── README.md
 ```
 
-As later stages land, new modules join the package (`tokenizer.py`,
-`transformer.py`, `kv_cache.py`, `scheduler.py`, `server.py`), each paired with a
-doc under `docs/`.
+As later stages land, new modules join the package (`transformer.py`,
+`kv_cache.py`, `scheduler.py`, `server.py`), each paired with docs under a
+matching `docs/<module>/` directory.
 
 ## Quickstart
 
@@ -73,16 +73,16 @@ dive.
 
 ### Part 1 — Sampling primitives
 
-- [x] [Numerically stable softmax](docs/stable-softmax.md)
-- [x] [Temperature scaling](docs/temperature.md)
-- [x] [Top-k filtering](docs/top-k.md)
-- [x] [Top-p filtering](docs/top-p.md)
-- [x] [Sampling from probabilities](docs/sample-from-probs.md)
-- [x] [Greedy token selection](docs/greedy-select.md)
+- [x] [Numerically stable softmax](docs/sampling/stable-softmax.md)
+- [x] [Temperature scaling](docs/sampling/temperature.md)
+- [x] [Top-k filtering](docs/sampling/top-k.md)
+- [x] [Top-p filtering](docs/sampling/top-p.md)
+- [x] [Sampling from probabilities](docs/sampling/sample-from-probs.md)
+- [x] [Greedy token selection](docs/sampling/greedy-select.md)
 
 ### Part 2 — Tokenization
 
-- [x] [Build a vocabulary](docs/build-vocab.md)
+- [x] [Build a vocabulary](docs/tokenizer/build-vocab.md)
 - [ ] Encode prompts
 - [ ] Decode tokens
 

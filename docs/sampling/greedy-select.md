@@ -1,7 +1,7 @@
 # Greedy token selection
 
-> Step 6 of the [roadmap](../README.md#roadmap). Implemented in
-> [`mini_llm_server/sampling.py`](../mini_llm_server/sampling.py) as `greedy_select`.
+> Step 6 of the [roadmap](../../README.md#roadmap). Implemented in
+> [`mini_llm_server/sampling.py`](../../mini_llm_server/sampling.py) as `greedy_select`.
 
 Greedy selection is the **deterministic** way to pick the next token: instead of
 drawing from the distribution like [`sample_from_probs`](sample-from-probs.md),

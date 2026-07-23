@@ -1,8 +1,8 @@
 # Building a vocabulary
 
-> Step 7 of the [roadmap](../README.md#roadmap), and the first of Part 2
+> Step 7 of the [roadmap](../../README.md#roadmap), and the first of Part 2
 > (Tokenization). Implemented in
-> [`mini_llm_server/tokenizer.py`](../mini_llm_server/tokenizer.py) as `build_vocab`.
+> [`mini_llm_server/tokenizer.py`](../../mini_llm_server/tokenizer.py) as `build_vocab`.
 
 ## Why this step exists
 

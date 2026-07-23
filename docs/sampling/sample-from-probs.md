@@ -1,7 +1,7 @@
 # Sampling from probabilities
 
-> Step 5 of the [roadmap](../README.md#roadmap). Implemented in
-> [`mini_llm_server/sampling.py`](../mini_llm_server/sampling.py) as `sample_from_probs`.
+> Step 5 of the [roadmap](../../README.md#roadmap). Implemented in
+> [`mini_llm_server/sampling.py`](../../mini_llm_server/sampling.py) as `sample_from_probs`.
 
 This is the final step of the sampling pipeline: given a probability
 distribution over the vocabulary, actually **draw one token**. Everything before

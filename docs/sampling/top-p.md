@@ -1,7 +1,7 @@
 # Top-p (nucleus) filtering
 
-> Step 4 of the [roadmap](../README.md#roadmap). Implemented in
-> [`mini_llm_server/sampling.py`](../mini_llm_server/sampling.py) as `top_p_filter`.
+> Step 4 of the [roadmap](../../README.md#roadmap). Implemented in
+> [`mini_llm_server/sampling.py`](../../mini_llm_server/sampling.py) as `top_p_filter`.
 
 Top-p filtering — also called **nucleus sampling** — keeps the *smallest* set of
 tokens whose probabilities add up to at least `p`, and masks the rest to `-inf`.

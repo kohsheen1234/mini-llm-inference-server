@@ -1,7 +1,7 @@
 # Temperature scaling
 
-> Step 2 of the [roadmap](../README.md#roadmap). Implemented in
-> [`mini_llm_server/sampling.py`](../mini_llm_server/sampling.py) as `apply_temperature`.
+> Step 2 of the [roadmap](../../README.md#roadmap). Implemented in
+> [`mini_llm_server/sampling.py`](../../mini_llm_server/sampling.py) as `apply_temperature`.
 
 Temperature is the knob that controls how *adventurous* generation is. It is
 applied to the logits **before** [softmax](stable-softmax.md), reshaping the

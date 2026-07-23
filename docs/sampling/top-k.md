@@ -1,7 +1,7 @@
 # Top-k filtering
 
-> Step 3 of the [roadmap](../README.md#roadmap). Implemented in
-> [`mini_llm_server/sampling.py`](../mini_llm_server/sampling.py) as `top_k_filter`.
+> Step 3 of the [roadmap](../../README.md#roadmap). Implemented in
+> [`mini_llm_server/sampling.py`](../../mini_llm_server/sampling.py) as `top_k_filter`.
 
 Top-k filtering restricts sampling to the **k most likely tokens**. Everything
 outside the top k is removed from consideration before the final draw, which
