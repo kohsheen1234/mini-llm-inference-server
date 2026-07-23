@@ -82,7 +82,7 @@ dive.
 
 ### Part 2 — Tokenization
 
-- [ ] Build a vocabulary
+- [x] [Build a vocabulary](docs/build-vocab.md)
 - [ ] Encode prompts
 - [ ] Decode tokens
 
