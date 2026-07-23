@@ -77,7 +77,7 @@ dive.
 - [x] [Temperature scaling](docs/temperature.md)
 - [x] [Top-k filtering](docs/top-k.md)
 - [x] [Top-p filtering](docs/top-p.md)
-- [ ] Sampling from probabilities
+- [x] [Sampling from probabilities](docs/sample-from-probs.md)
 - [ ] Greedy token selection
 
 ### Part 2 — Tokenization

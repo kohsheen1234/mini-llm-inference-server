@@ -4,7 +4,7 @@ A transformer emits one logit (an unbounded score) per vocabulary token. Before
 a token can be sampled, those logits are optionally reshaped by temperature and
 then normalised into a probability distribution by softmax:
 
-    logits -> apply_temperature -> top_k_filter / top_p_filter -> stable_softmax -> sample
+    logits -> apply_temperature -> top_k_filter / top_p_filter -> stable_softmax -> sample_from_probs
 
 Each function operates over the last axis, so it works for a single request
 ``(vocab,)``, a batch ``(batch, vocab)``, or a sequence batch
@@ -96,3 +96,15 @@ def top_p_filter(logits, p):
     np.put_along_axis(remove_mask, sorted_indices, sorted_remove_mask, axis=-1)
 
     return np.where(remove_mask, -np.inf, logits)
+
+
+def sample_from_probs(probs, rng):
+    """Draw a single token id from a categorical distribution.
+
+    ``probs`` is a 1-D probability vector over the vocabulary (as produced by
+    ``stable_softmax``) and must sum to 1. ``rng`` is a NumPy random generator
+    (``np.random.default_rng()``); passing it in explicitly keeps sampling
+    reproducible. Returns the sampled token id as an ``int``. See
+    ``docs/sample-from-probs.md``.
+    """
+    return int(rng.choice(len(probs), p=probs))
