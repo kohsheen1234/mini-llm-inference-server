@@ -108,3 +108,16 @@ def sample_from_probs(probs, rng):
     ``docs/sample-from-probs.md``.
     """
     return int(rng.choice(len(probs), p=probs))
+
+
+def greedy_select(logits):
+    """Return the id of the highest-scoring token (deterministic decoding).
+
+    The deterministic alternative to ``sample_from_probs``: always pick the
+    argmax. Because softmax is order-preserving, this can run on raw logits or on
+    probabilities with the same result, so no ``stable_softmax`` step is needed.
+    Ties resolve to the lowest index (NumPy's ``argmax`` returns the first
+    maximum). Operates on a single 1-D logit vector. See
+    ``docs/greedy-select.md``.
+    """
+    return int(np.argmax(logits))

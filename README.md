@@ -78,7 +78,7 @@ dive.
 - [x] [Top-k filtering](docs/top-k.md)
 - [x] [Top-p filtering](docs/top-p.md)
 - [x] [Sampling from probabilities](docs/sample-from-probs.md)
-- [ ] Greedy token selection
+- [x] [Greedy token selection](docs/greedy-select.md)
 
 ### Part 2 — Tokenization
 
